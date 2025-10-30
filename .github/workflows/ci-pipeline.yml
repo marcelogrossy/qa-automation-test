@@ -1,0 +1,68 @@
+name: 🧪 CI - QA Automation Test
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    name: Build & Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout código
+        uses: actions/checkout@v4
+
+      - name: ☕ Configurar Java 22
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '22'
+
+      - name: ⚙️ Configurar permissões de execução
+        run: chmod +x mvnw || true
+
+      - name: 📦 Instalar dependências
+        run: mvn clean install -DskipTests
+
+      - name: 🧪 Executar testes
+        run: mvn clean test allure:report
+
+      # === Relatórios Cucumber ===
+      - name: 📊 Gerar relatório Cucumber HTML
+        if: always()
+        run: |
+          mkdir -p reports/cucumber
+          cp -r target/cucumber-reports/* reports/cucumber/ || echo "Nenhum relatório cucumber encontrado"
+          cp -r target/docs/*.pdf || echo "Nenhum arquivo pdf gerado"
+
+      # === Relatórios Allure ===
+      - name: ⚙️ Instalar Allure CLI
+        if: always()
+        run: |
+          sudo apt update
+          sudo apt install -y allure
+
+      - name: 📈 Gerar relatório Allure
+        if: always()
+        run: |
+          mkdir -p reports/allure
+          allure generate target/allure-results -o reports/allure --clean || echo "Nenhum relatório Allure encontrado"
+
+      # === Artefatos dos relatórios ===
+      - name: 📤 Publicar relatórios como artefatos
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Test-Reports
+          path: reports/
+
+      # === Publicar os Relatórios de Testes
+       - name: 🚀 Publicar relatórios no GitHub Pages
+         if: always()
+         uses: peaceiris/actions-gh-pages@v3
+         with:
+           github_token: ${{ secrets.GITHUB_TOKEN }}
+           publish_dir: ./reports
