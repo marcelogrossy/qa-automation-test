@@ -68,8 +68,8 @@ jobs:
           echo "📂 Organizando relatórios para publicação..."
           mkdir -p reports
 
-          if [ -d "target/allure-report" ]; then
-            cp -r target/allure-report reports/allure-report
+          if [ -d "target/allure-reports" ]; then
+            cp -r target/allure-reports reports/allure-report
           else
             echo "Nenhum relatório Allure encontrado"
           fi
