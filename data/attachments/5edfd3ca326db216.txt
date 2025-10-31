@@ -1,0 +1,1 @@
+Cenário finalizado Logs: Compra não finalizada código postal incorreto - Status: PASSOU

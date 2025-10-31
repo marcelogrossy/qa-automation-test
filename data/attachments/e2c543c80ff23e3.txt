@@ -1,0 +1,1 @@
+Cenário finalizado Logs: Listar todas as marcas - Status: PASSOU

@@ -1,0 +1,1 @@
+Cenário finalizado Logs: Compra efetuada com sucesso via cartão de crédito - Status: PASSOU

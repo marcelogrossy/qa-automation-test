@@ -1,0 +1,1 @@
+Cenário finalizado Logs: Compra não finalizada número do cartão incorreto - Status: PASSOU

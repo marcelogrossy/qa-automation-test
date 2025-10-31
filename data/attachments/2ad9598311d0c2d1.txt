@@ -1,0 +1,1 @@
+Cenário finalizado Logs: Login bem-sucedido com credenciais válidas - Status: PASSOU
