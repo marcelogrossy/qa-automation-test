@@ -1,7 +1,7 @@
 # language: pt
 Funcionalidade: WEB - Validação do cliclo de autenticação do usuário
 
-  @web
+  @web @login-web
   Cenario: Login com sucesso
     Dado que o usuário está na tela de login
     Quando informa o usuário: "customer@practicesoftwaretesting.com" e senha "welcome01"
