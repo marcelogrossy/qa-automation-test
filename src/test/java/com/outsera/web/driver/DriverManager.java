@@ -59,16 +59,17 @@ public class DriverManager {
      */
     private static WebDriver createDriver() {
         String browser = System.getProperty("browser", "chrome").toLowerCase();
-        String runMode = System.getProperty("runMode", "local").toLowerCase();
-        String runHost = System.getProperty("host.remote", ConfigReader.get("runHost"));
+        String runMode = System.getProperty("runMode", "remote").toLowerCase();
+        String gridUrl = System.getProperty("gridUrl", ConfigReader.get("gridUrl"));
 
         try {
             switch (runMode) {
-                case "remote":
-                    return createRemoteDriver(browser, runHost);
                 case "local":
-                default:
                     return createLocalDriver(browser);
+
+                case "remote":
+                default:
+                    return createRemoteDriver(browser, gridUrl);
             }
         } catch (MalformedURLException e) {
             throw new RuntimeException("Erro ao criar o WebDriver: " + e.getMessage(), e);
@@ -96,7 +97,7 @@ public class DriverManager {
                 options.addArguments("--disable-gpu");
                 options.addArguments("--disable-extensions");
                 WebDriverManager.chromedriver().setup();
-                return new ChromeDriver(new ChromeOptions());
+                return new ChromeDriver(options);
         }
     }
 
@@ -109,14 +110,41 @@ public class DriverManager {
      * @throws MalformedURLException
      */
     private static WebDriver createRemoteDriver(String browser, String gridUrl) throws MalformedURLException {
-        switch (browser) {
+
+        // Define a URL do Grid Hub
+        URL hubUrl = new URL(gridUrl);
+
+        switch (browser.toLowerCase()) {
             case "firefox":
-                return new RemoteWebDriver(new URL(gridUrl), new FirefoxOptions());
+                FirefoxOptions firefoxOptions = new FirefoxOptions();
+                // Opções essenciais para rodar no Docker/CI (Linux)
+                firefoxOptions.addArguments("--disable-gpu");
+
+                return new RemoteWebDriver(hubUrl, firefoxOptions);
+
             case "edge":
-                return new RemoteWebDriver(new URL(gridUrl), new EdgeOptions());
+                EdgeOptions edgeOptions = new EdgeOptions();
+                // O Edge usa o Chromium, então as opções são similares ao Chrome
+                edgeOptions.addArguments("--no-sandbox");
+                edgeOptions.addArguments("--disable-dev-shm-usage");
+
+                return new RemoteWebDriver(hubUrl, edgeOptions);
+
             case "chrome":
             default:
-                return new RemoteWebDriver(new URL(gridUrl), new ChromeOptions());
+                ChromeOptions chromeOptions = new ChromeOptions();
+
+                // 🛑 OPÇÕES CRUCIAIS PARA AMBIENTES CI/DOCKER LINUX 🛑
+                chromeOptions.addArguments("--no-sandbox"); // Necessário em ambientes Docker
+                chromeOptions.addArguments("--disable-dev-shm-usage"); // Necessário para evitar falta de memória compartilhada
+                chromeOptions.addArguments("--window-size=1920,1080"); // Define o tamanho da janela virtual
+
+                // Adicione outras opções comuns
+                chromeOptions.addArguments("--disable-gpu");
+                chromeOptions.addArguments("--disable-extensions");
+
+                return new RemoteWebDriver(hubUrl, chromeOptions);
         }
     }
+
 }
