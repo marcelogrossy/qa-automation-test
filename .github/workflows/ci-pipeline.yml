@@ -1,4 +1,4 @@
-name: Teste de Configuração do Maven e Java
+name: Teste Final de Configuração do Maven (Forçando Instalação)
 
 on:
   push:
@@ -13,22 +13,19 @@ jobs:
       - name: 🔄 Checkout do Código
         uses: actions/checkout@v4
 
-      # 1. Configurar Maven (CORREÇÃO)
-      - name: 📦 Configurar Maven
-        uses: actions/setup-maven@v3
-        with:
-          maven-version: '3.9.6'
-          cache: true
+      # NOVO PASSO: Instalação manual do Maven (para contornar o act)
+      - name: 🛠️ Instalar Maven no Runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y maven
 
-      # 2. Configurar Java JDK 22
-      - name: ☕ Configurar JDK 22 (Eclipse Temurin)
+      - name: ☕ Configurar JDK 22 e Maven (Unificado)
         uses: actions/setup-java@v4
         with:
           java-version: '22'
           distribution: 'temurin'
+          cache: maven
 
-      # 3. Testar a Execução do Comando Maven
+      # 2. Testar a Execução do Comando Maven
       - name: 🛠️ Executar Comando Maven Simples
-        # Se o Maven estiver configurado corretamente, este passo deve rodar.
-        # Ele vai compilar, mas provavelmente falhará nos testes devido à falta do navegador.
-        run: mvn clean
+        run: mvn clean test --file pom.xml
