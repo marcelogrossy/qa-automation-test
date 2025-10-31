@@ -89,6 +89,12 @@ public class DriverManager {
                 return new EdgeDriver(new EdgeOptions());
             case "chrome":
             default:
+                ChromeOptions options = new ChromeOptions();
+                options.addArguments("--no-sandbox");
+                options.addArguments("--disable-dev-shm-usage");
+                options.addArguments("--window-size=1920,1080");
+                options.addArguments("--disable-gpu");
+                options.addArguments("--disable-extensions");
                 WebDriverManager.chromedriver().setup();
                 return new ChromeDriver(new ChromeOptions());
         }
