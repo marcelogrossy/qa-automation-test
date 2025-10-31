@@ -120,6 +120,10 @@
                     <argLine>
                         -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
                     </argLine>
+                    <systemPropertyVariables>
+                        <cucumber.filter.tags>${cucumber.filter.tags}</cucumber.filter.tags>
+                        <cucumber.options>--tags ${cucumber.filter.tags}</cucumber.options>
+                    </systemPropertyVariables>
                 </configuration>
             </plugin>
             <plugin>
