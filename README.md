@@ -21,8 +21,27 @@ Além das novas implementações, esta versão traz:
 - Ajustes de estabilidade no ambiente de execução do **Selenium Grid**
 - Melhoria de performance e estruturação do módulo **Mobile**
 
+### 🧪 Tecnologias e Ferramentas
+<p align="left">
+  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Selenium-43B02A?style=for-the-badge&logo=selenium&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Cucumber-23D96C?style=for-the-badge&logo=cucumber&logoColor=white"/>
+  <img src="https://img.shields.io/badge/JUnit-25A162?style=for-the-badge&logo=junit5&logoColor=white"/>
+  <img src="https://img.shields.io/badge/TestNG-FF9800?style=for-the-badge"/>
+  <img src="https://img.shields.io/badge/Allure-FF4088?style=for-the-badge&logo=allure&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Appium-D22128?style=for-the-badge&logo=apache&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white"/>
+  <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white"/>
+  <img src="https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white"/>
+</p>
+
 Observação:
-- Acompanhar status dos testes via Allure Report 🔗 [AllureReport](https://marcelogrossy.github.io/qa-automation-test/#)
+
+🔹 [**qa-automation-test**](https://github.com/marcelogrossy/qa-automation-test)
+> POC completa de automação de testes **Web, API e Mobile**, com **Java, Selenium, Cucumber e Allure Reports**, integrada ao **GitHub Actions** e **Docker**.
+
+🔹 [**AllureReport**](https://marcelogrossy.github.io/qa-automation-test/#)
+> Página com os resultados, gráficos e méticas da POC.
 
 ---
 
