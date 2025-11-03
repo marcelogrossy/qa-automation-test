@@ -1,10 +1,13 @@
 # 🧾 Release Notes – QA Automation Test v1.0.0
 
-**Data:** 30/10/2025  
-**Responsável:** Antonio Marcelo Grossi  
-**E-mail:** marcelo.grossy@gmail.com  
-**Telefone:** +55 (41) 98430-3412
-
+📅 **Data:** 30/10/2025  
+👤 **Responsável:** Antonio Marcelo Grossi  
+✉️ **E-mail:** marcelo.grossy@gmail.com  
+📱 **Telefone:** +55 (41) 98430-3412  
+🌐 **Contato:** [LinkedIn](www.linkedin.com/in/antonio-marcelo-grossi-37b24ab)  
+💻 Engenheiro de Testes & QA Automation  
+🚀 Experiência com **Java, Selenium, Cucumber, JMeter, Jenkins, Docker e TestLink**  
+📊 Foco em automação de testes Web, API, Mobile e DevOps
 ---
 
 ## 🧠 Resumo
@@ -93,3 +96,4 @@ Os relatórios são gerados automaticamente após a execução dos testes, com s
 
 📘 Cucumber HTML Report
    - Gerado automaticamente no diretório: [target/cucumber-reports/index.html]
+   - Página de acompanhamento via Allures Report (https://marcelogrossy.github.io/qa-automation-test/#)
