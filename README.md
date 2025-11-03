@@ -21,6 +21,9 @@ Além das novas implementações, esta versão traz:
 - Ajustes de estabilidade no ambiente de execução do **Selenium Grid**
 - Melhoria de performance e estruturação do módulo **Mobile**
 
+Observação:
+- Acompanhar status dos testes via Allure Report 🔗 [AllureReport](https://marcelogrossy.github.io/qa-automation-test/#)
+
 ---
 
 ## 🚀 Funcionalidades Implementadas
