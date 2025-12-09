@@ -1,12 +1,16 @@
 package com.outsera.mobile.commons;
 
+import com.outsera.web.driver.DriverManager;
 import io.appium.java_client.service.local.AppiumDriverLocalService;
 import io.appium.java_client.service.local.AppiumServiceBuilder;
 import io.appium.java_client.service.local.flags.GeneralServerFlag;
 
+import java.util.logging.Logger;
+
 public class AppiumServerManager {
 
     private static AppiumDriverLocalService service;
+    static Logger logger = Logger.getLogger(AppiumServerManager.class.toString());
 
     /**
      * Método para configuração do servidor mobile
@@ -33,7 +37,7 @@ public class AppiumServerManager {
             }
 
             if (service.isRunning()) {
-                System.out.println("Appium Server iniciado: " + service.getUrl());
+                logger.info("Appium Server iniciado: {}");
             } else {
                 throw new IllegalStateException("Não foi possível iniciar o Appium Server!");
             }
@@ -47,7 +51,7 @@ public class AppiumServerManager {
     public static void stopServer() {
         if (service != null && service.isRunning()) {
             service.stop();
-            System.out.println("Appium Server parado");
+            logger.info("Appium Server parado");
         }
     }
 

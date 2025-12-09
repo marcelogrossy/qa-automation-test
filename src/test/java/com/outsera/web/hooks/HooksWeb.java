@@ -8,6 +8,8 @@ import io.cucumber.java.Scenario;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
+
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class HooksWeb {
@@ -35,13 +37,18 @@ public class HooksWeb {
     @After("@web")
     public void tearDown(Scenario scenario) {
         try {
-            byte[] screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
-            String screenshotName = scenario.getName() + " - " + java.time.LocalTime.now().toString();
-            scenario.attach(screenshot, "image/png", screenshotName);
+            if (DriverManager.getDriver() != null) {
+                byte[] screenshot = ((TakesScreenshot) DriverManager.getDriver())
+                        .getScreenshotAs(OutputType.BYTES);
+
+                String screenshotName = scenario.getName() + " - " + java.time.LocalTime.now();
+                scenario.attach(screenshot, "image/png", screenshotName);
+            }
         } catch (Exception e) {
-            System.err.println("Erro ao capturar screenshot: " + e.getMessage());
+            logger.log(Level.SEVERE, "Erro ao capturar screenshot", e);
+        } finally {
+            DriverManager.quitDriver();
         }
-        DriverManager.quitDriver();
     }
 
     /**
@@ -54,7 +61,6 @@ public class HooksWeb {
     @After()
     public void afterScenario(Scenario scenario) {
         for(String s : scenario.getSourceTagNames()){
-            System.out.println("======== " + s.toString());
             if(s.equals("@web")){
                 AllureManager.takeScreenshot(driver, "Cenário " + s.replace("@", "") + "finalizado Evidência: " + scenario.getName() +
                         " - Status: " + (scenario.isFailed() ? "FALHOU" : "PASSOU"));

@@ -2,13 +2,19 @@ package com.outsera.api.hooks;
 
 import com.outsera.api.commons.ApiRequest;
 import com.outsera.api.stepdefinitions.BrandsSteps;
+import com.outsera.web.driver.DriverManager;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.restassured.response.Response;
+import org.slf4j.LoggerFactory;
+
+import java.util.logging.Logger;
 
 public class HooksApi {
 
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(HooksApi.class);
     private static boolean tokenObtido = false;
+    static Logger logger = Logger.getLogger(HooksApi.class.toString());
 
     /**
      * Hook que autentica automaticamente o usuário antes de cenários marcados com @api-login
@@ -16,7 +22,7 @@ public class HooksApi {
     @Before("@api-login")
     public void autenticarUsuarioParaLogin() {
         if (!tokenObtido) {
-            System.out.println("Autenticando usuário via login API...");
+            logger.info("Autenticando usuário via login API...");
 
             String email = "admin@practicesoftwaretesting.com";
             String senha = "welcome01";
@@ -37,15 +43,14 @@ public class HooksApi {
 
             if (response.getStatusCode() == 200) {
                 String token = response.jsonPath().getString("access_token");
-                System.out.println("Token obtido com sucesso: " + token);
+                log.info("Token obtido com sucesso: {}", token);
                 ApiRequest.setAuthToken(token);
                 tokenObtido = true;
             } else {
-                throw new RuntimeException("Falha ao autenticar via login: " +
-                        response.getBody().asString());
+                throw new RuntimeException(String.format("Falha ao autenticar via login: %s", response.getBody().asString()));
             }
         } else {
-            System.out.println("Token já obtido, reutilizando...");
+            log.info("Token já obtido, reutilizando...");
         }
     }
 
@@ -54,7 +59,7 @@ public class HooksApi {
      */
     @Before("@prepareBrand")
     public void criarMarcaTemporariaParaTeste() {
-        System.out.println("Criando marca temporária para PUT/DELETE...");
+        log.info("Criando marca temporária para PUT/DELETE...");
 
         String payload = """
             {
@@ -76,7 +81,7 @@ public class HooksApi {
         }
 
         BrandsSteps.createdBrandsId = response.jsonPath().getString("id");
-        System.out.println("✅ Marca temporária criada com ID: " + BrandsSteps.createdBrandsId);
+        log.info("✅ Marca temporária criada com ID: {}", BrandsSteps.createdBrandsId);
     }
 
     /**
@@ -87,7 +92,7 @@ public class HooksApi {
         String id = BrandsSteps.createdBrandsId;
 
         if (id != null && !id.isEmpty()) {
-            System.out.println("Limpando ambiente: excluindo marca criada (" + id + ")...");
+            log.info("Limpando ambiente: excluindo marca criada ({})...", id);
 
             ApiRequest deleteRequest = new ApiRequest()
                     .definirMetodo("DELETE")
@@ -96,15 +101,15 @@ public class HooksApi {
 
             int status = deleteRequest.getResponse().getStatusCode();
             if (status == 200 || status == 204) {
-                System.out.println("Marca excluída com sucesso! (status " + status + ")");
+                log.info("Marca excluída com sucesso! (status {})", status);
             } else {
-                System.err.println("Falha ao excluir marca: status " + status);
+                log.error("Falha ao excluir marca: status {}", status);
                 deleteRequest.getResponse().then().log().all();
             }
 
             BrandsSteps.createdBrandsId = null;
         } else {
-            System.out.println("ℹ️ Nenhuma marca para excluir neste cenário.");
+            log.info("ℹ️ Nenhuma marca para excluir neste cenário.");
         }
     }
 }

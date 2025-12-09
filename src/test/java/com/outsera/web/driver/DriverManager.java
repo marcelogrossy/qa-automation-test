@@ -117,7 +117,6 @@ public class DriverManager {
         switch (browser.toLowerCase()) {
             case "firefox":
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
-                // Opções essenciais para rodar no Docker/CI (Linux)
                 firefoxOptions.addArguments("--disable-gpu");
 
                 return new RemoteWebDriver(hubUrl, firefoxOptions);
@@ -133,13 +132,9 @@ public class DriverManager {
             case "chrome":
             default:
                 ChromeOptions chromeOptions = new ChromeOptions();
-
-                // 🛑 OPÇÕES CRUCIAIS PARA AMBIENTES CI/DOCKER LINUX 🛑
-                chromeOptions.addArguments("--no-sandbox"); // Necessário em ambientes Docker
-                chromeOptions.addArguments("--disable-dev-shm-usage"); // Necessário para evitar falta de memória compartilhada
-                chromeOptions.addArguments("--window-size=1920,1080"); // Define o tamanho da janela virtual
-
-                // Adicione outras opções comuns
+                chromeOptions.addArguments("--no-sandbox");
+                chromeOptions.addArguments("--disable-dev-shm-usage");
+                chromeOptions.addArguments("--window-size=1920,1080");
                 chromeOptions.addArguments("--disable-gpu");
                 chromeOptions.addArguments("--disable-extensions");
 

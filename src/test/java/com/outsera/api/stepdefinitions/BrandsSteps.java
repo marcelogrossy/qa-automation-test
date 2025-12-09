@@ -1,20 +1,27 @@
 package com.outsera.api.stepdefinitions;
 
 import com.outsera.api.commons.ApiRequest;
+import com.outsera.web.driver.DriverManager;
 import io.cucumber.java.pt.*;
 import io.restassured.response.Response;
 import org.junit.Assert;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class BrandsSteps {
 
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(BrandsSteps.class);
     private final ApiRequest apiRequest = new ApiRequest();
     private Response response;
     private static final String BASE_ENDPOINT = "/brands";
+    static Logger logger = Logger.getLogger(BrandsSteps.class.toString());
 
     public static String createdBrandsId;
 
@@ -37,7 +44,7 @@ public class BrandsSteps {
     @Entao("a resposta deve ter status {int}")
     public void validarStatus(int statusEsperado) {
         int statusAtual = response.getStatusCode();
-        System.out.printf("Validando status esperado: %d | obtido: %d%n", statusEsperado, statusAtual);
+        logger.info("Validando status esperado: {} | obtido: {}");
         assertEquals(statusEsperado, statusAtual);
         if (statusEsperado == 201) {
             createdBrandsId = response.jsonPath().getString("id");
@@ -47,7 +54,7 @@ public class BrandsSteps {
     @Entao("a resposta deve conter o campo {string} com valor {string}")
     public void validarCampoComValor(String campo, String valorEsperado) {
         String valorObtido = response.jsonPath().getString(campo);
-        System.out.printf("Validando campo '%s': esperado = %s | obtido = %s%n", campo, valorEsperado, valorObtido);
+        logger.info("Validando campo '{}': esperado = {} | obtido = {}");
         assertEquals(valorEsperado, valorObtido);
     }
 
@@ -57,7 +64,7 @@ public class BrandsSteps {
         assertNotNull("Campo " + jsonPathCampo + " está nulo!", campo);
         assertTrue("O campo não é uma lista!", campo instanceof java.util.List);
         int tamanho = ((java.util.List<?>) campo).size();
-        System.out.println("✅ Lista encontrada com " + tamanho + " itens.");
+        log.info("✅ Lista encontrada com {} itens.", tamanho);
         assertTrue("A lista está vazia!", tamanho > 0);
     }
 
@@ -98,6 +105,6 @@ public class BrandsSteps {
 
         boolean marcaExiste = getResponse.jsonPath().getList("name").contains(nomeMarca);
         Assert.assertFalse("A marca ainda está presente!", marcaExiste);
-        System.out.println("✅ Marca removida com sucesso!");
+        log.info("✅ Marca removida com sucesso!");
     }
 }
