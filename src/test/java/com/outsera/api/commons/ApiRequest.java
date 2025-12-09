@@ -1,5 +1,6 @@
 package com.outsera.api.commons;
 
+import com.outsera.web.commons.ConfigReader;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
@@ -13,6 +14,7 @@ public class ApiRequest {
     private Map<String, Object> body;
     private Response response;
     private static String authToken;
+    String gridUrlApi = System.getProperty("gridUrlApi", ConfigReader.get("gridUrlApi"));
 
     public ApiRequest definirMetodo(String metodo) {
         this.metodo = metodo;
@@ -49,7 +51,7 @@ public class ApiRequest {
      */
     public ApiRequest executar() {
         RequestSpecification request = RestAssured.given()
-                .baseUri("https://api.practicesoftwaretesting.com") // ajuste sua base URL
+                .baseUri(gridUrlApi)
                 .header("Content-Type", "application/json");
 
         if (authToken != null && !authToken.isEmpty()) {
