@@ -1,1 +1,0 @@
-Cenário finalizado Logs: Login com sucesso - Status: FALHOU

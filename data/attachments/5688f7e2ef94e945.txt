@@ -1,1 +1,0 @@
-Cenário finalizado Logs: Excluir uma marca existente - Status: PASSOU

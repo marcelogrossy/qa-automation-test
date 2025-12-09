@@ -1,1 +1,0 @@
-Cenário finalizado Logs: Testes de login parametrizados - Status: PASSOU
