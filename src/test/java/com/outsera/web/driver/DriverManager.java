@@ -15,6 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 public class DriverManager {
@@ -111,7 +112,6 @@ public class DriverManager {
      */
     private static WebDriver createRemoteDriver(String browser, String gridUrl) throws MalformedURLException {
 
-        // Define a URL do Grid Hub
         URL hubUrl = new URL(gridUrl);
 
         switch (browser.toLowerCase()) {
