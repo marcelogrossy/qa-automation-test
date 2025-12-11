@@ -39,8 +39,8 @@ public class LoginPage {
     }
 
     public void abrirTelaLogin(WebDriver driver) {
-        logger.info("url da aplicação: " + ConfigReader.get("url.web"));
-        driver.navigate().to(ConfigReader.get("url.web"));
+        logger.info("url da aplicação: " + ConfigReader.get("urlWeb"));
+        driver.navigate().to(ConfigReader.get("urlWeb"));
     }
 
     public void preencherLogin(WebDriver driver, String nomeUsuario, String senhaUsuario) {

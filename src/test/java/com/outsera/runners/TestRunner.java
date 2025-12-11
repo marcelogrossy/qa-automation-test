@@ -25,7 +25,7 @@ import static io.cucumber.junit.platform.engine.Constants.*;
                 "json:target/cucumber-reports/cucumber.json," +
                 "junit:target/cucumber-reports/cucumber.xml," +
                 "message:target/cucumber-reports/cucumber.ndjson," +
-                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"  // ✅ ALLURE
+                "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
 )
 @ConfigurationParameter(
         key = ANSI_COLORS_DISABLED_PROPERTY_NAME,

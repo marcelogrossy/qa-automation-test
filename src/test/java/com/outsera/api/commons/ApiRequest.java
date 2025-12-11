@@ -14,7 +14,7 @@ public class ApiRequest {
     private Map<String, Object> body;
     private Response response;
     private static String authToken;
-    String gridUrlApi = System.getProperty("gridUrlApi", ConfigReader.get("gridUrlApi"));
+    String urlApi = System.getProperty("urlApi", ConfigReader.get("urlApi"));
 
     public ApiRequest definirMetodo(String metodo) {
         this.metodo = metodo;
@@ -51,7 +51,7 @@ public class ApiRequest {
      */
     public ApiRequest executar() {
         RequestSpecification request = RestAssured.given()
-                .baseUri(gridUrlApi)
+                .baseUri(urlApi)
                 .header("Content-Type", "application/json");
 
         if (authToken != null && !authToken.isEmpty()) {

@@ -89,8 +89,13 @@ outsera-suite-test
 
 ## 🧩 Execução e Relatórios 
     
-#### ▶️ Via IntelliJ IDEA ou Eclipse
+#### ▶️ Via IntelliJ IDEA, Eclipse ou Maven
 
+- Variáveis de execução:
+  - `browser`: chrome, firefox ou edge (default: chrome)
+  - `runMode`: local ou remote (default: remote)
+  - `gridUrl`: URL do Selenium Grid (default: http://localhost:4444/wd/hub)
+  - `urlApi`: URL da API (default: http://localhost:8080)
 - Execução via Cucumber
   - Clique com o botão direito na classe [com.outsera.runners.TestRunner.java], opção [Run]
 - Execução via TestNG
@@ -102,7 +107,7 @@ outsera-suite-test
 - Execução via Maven usando gerador de relatório - Cucumber cukedoctor e Cucumber Reports Online
     - mvn clean test [project.build.directory]
 - Execução via Maven usando gerador de relatórios - Cucumber Reports e Allure Reports
-    - mvn clean test allure:report [project.build.directory]  
+    - mvn clean test allure:report [project.build.directory]
 
 #### 📊 Relatórios de Teste
 Os relatórios são gerados automaticamente após a execução dos testes, com suporte aos seguintes formatos:
