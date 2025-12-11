@@ -111,12 +111,12 @@
                     <includes>
                         <include>com/outsera/runners/TestRunner.java</include>
                     </includes>
-                    <systemPropertyVariables>
+                    <systemProperties>
                         <property>
                             <name>allure.results.directory</name>
                             <value>${project.build.directory}/allure-results</value>
                         </property>
-                    </systemPropertyVariables>
+                    </systemProperties>
                     <argLine>
                         -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
                     </argLine>
