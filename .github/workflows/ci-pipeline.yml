@@ -17,11 +17,20 @@ jobs:
       id-token: write
 
     services:
-      selenium_chrome:
-        image: selenium/standalone-chrome:latest
-        ports:
-          - 4444:4444
-        options: --health-cmd "curl -f http://localhost:4444/wd/hub/status || exit 1" --health-interval 10s --health-timeout 5s --health-retries 5
+      selenium-hub:
+        image: selenium/hub:4.21.0
+        options: >
+          --health-cmd "curl -f http://localhost:4444/status || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      chrome:
+        image: selenium/node-chrome:4.21.0
+        env:
+          SE_EVENT_BUS_HOST: selenium-hub
+          SE_EVENT_BUS_PUBLISH_PORT: 4442
+          SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
 
     steps:
       # 1️⃣ Checkout do código
@@ -48,7 +57,7 @@ jobs:
 
       # 5️⃣ Compilar, executar testes e gerar Allure Results
       - name: Compilar, Executar Testes e Gerar Allure Results
-        run: mvn clean test allure:report
+        run: mvn clean test allure:report -Pci
 
       # 6️⃣ Organizar relatórios
       - name: 📂 Organizar relatórios
