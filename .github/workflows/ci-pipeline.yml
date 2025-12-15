@@ -18,7 +18,7 @@ jobs:
 
     services:
       selenium-hub:
-        image: selenium/hub:4.21.0
+        image: selenium/hub:4.39.0
         options: >
           --health-cmd "curl -f http://localhost:4444/status || exit 1"
           --health-interval 10s
@@ -26,7 +26,7 @@ jobs:
           --health-retries 5
 
       chrome:
-        image: selenium/node-chrome:4.21.0
+        image: selenium/node-chrome:4.39.0
         env:
           SE_EVENT_BUS_HOST: selenium-hub
           SE_EVENT_BUS_PUBLISH_PORT: 4442
