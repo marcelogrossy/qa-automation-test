@@ -1,1 +1,0 @@
-Cenário finalizado Logs: Login com insucesso usuário inválido - Status: FALHOU

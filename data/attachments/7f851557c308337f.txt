@@ -1,0 +1,1 @@
+Cenário finalizado Logs: Login com insucesso usuário inexistente - Status: PASSOU
