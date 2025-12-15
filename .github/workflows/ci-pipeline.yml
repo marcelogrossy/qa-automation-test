@@ -17,24 +17,10 @@ jobs:
       id-token: write
 
     services:
-      selenium-hub:
-        image: selenium/hub:4.39.0
+      selenium:
+        image: selenium/standalone-chrome:4.39.0
         ports:
           - 4444:4444
-          - 4442:4442
-          - 4443:4443
-
-      chrome:
-        image: selenium/node-chrome:4.39.0
-        env:
-          SE_EVENT_BUS_HOST: selenium-hub
-          SE_EVENT_BUS_PUBLISH_PORT: 4442
-          SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
-          SE_NODE_MAX_SESSIONS: "1"
-          SE_NODE_OVERRIDE_MAX_SESSIONS: "true"
-
-    env:
-      SELENIUM_HUB_URL: "http://selenium-hub:4444"
 
     steps:
       # 1️⃣ Checkout do código
@@ -56,19 +42,16 @@ jobs:
           cache: maven
 
       # 4️⃣ Esperar Selenium Grid
-      - name: ⏳ Aguardar Selenium Grid
+      - name: ⏳ Aguardar Selenium
         run: |
-          echo "Aguardando Selenium Grid ficar pronto..."
-          for i in {1..40}; do
-            STATUS=$(curl -s http://selenium-hub:4444/status || true)
-            echo "$STATUS"
-            if echo "$STATUS" | grep -q '"ready":true'; then
-              echo "Selenium Grid pronto!"
+          for i in {1..30}; do
+            if curl -s http://localhost:4444/status | grep -q '"ready":true'; then
+              echo "Selenium pronto!"
               exit 0
             fi
             sleep 2
           done
-          echo "Selenium Grid não ficou pronto a tempo"
+          echo "Selenium não iniciou"
           exit 1
 
       # 5️⃣ Compilar, executar testes e gerar Allure Results

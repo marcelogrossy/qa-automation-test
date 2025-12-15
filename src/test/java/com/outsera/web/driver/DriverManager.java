@@ -14,6 +14,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -106,8 +107,6 @@ public class DriverManager {
                 options.addArguments("--no-sandbox");
                 options.addArguments("--disable-dev-shm-usage");
                 options.addArguments("--window-size=1920,1080");
-                options.addArguments("--disable-gpu");
-                options.addArguments("--disable-extensions");
                 WebDriverManager.chromedriver().setup();
                 return new ChromeDriver(options);
         }
@@ -143,11 +142,38 @@ public class DriverManager {
             case "chrome":
             default:
                 ChromeOptions chromeOptions = new ChromeOptions();
-                chromeOptions.addArguments("--no-sandbox");
-                chromeOptions.addArguments("--disable-dev-shm-usage");
-                chromeOptions.addArguments("--window-size=1920,1080");
-                chromeOptions.addArguments("--disable-gpu");
-                chromeOptions.addArguments("--disable-extensions");
+
+                chromeOptions.addArguments(
+                        "--no-sandbox",
+                        "--disable-dev-shm-usage",
+                        "--window-size=1920,1080",
+                        "--start-maximized",
+                        "--lang=pt-BR"
+                );
+
+                chromeOptions.addArguments(
+                        "--disable-blink-features=AutomationControlled"
+                );
+
+                boolean headless = Boolean.parseBoolean(
+                        System.getProperty("headless", "true")
+                );
+                if (headless) {
+                    chromeOptions.addArguments("--headless=new");
+                }
+
+                chromeOptions.addArguments(
+                        "--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) " +
+                                "AppleWebKit/537.36 (KHTML, like Gecko) " +
+                                "Chrome/121.0.0.0 Safari/537.36"
+                );
+
+                chromeOptions.setExperimentalOption(
+                        "excludeSwitches", List.of("enable-automation")
+                );
+                chromeOptions.setExperimentalOption(
+                        "useAutomationExtension", false
+                );
 
                 return new RemoteWebDriver(hubUrl, chromeOptions);
         }
