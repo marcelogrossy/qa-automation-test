@@ -53,7 +53,7 @@ jobs:
 
       # 5️⃣ Compilar, executar testes e gerar Allure Results
       - name: Compilar, Executar Testes e Gerar Allure Results
-        run: mvn clean test allure:report -Pci
+        run: mvn clean test  -DrunMode="remote" allure:report -Pci
 
       # 6️⃣ Organizar relatórios
       - name: 📂 Organizar relatórios
