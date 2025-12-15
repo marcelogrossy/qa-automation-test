@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <cucumber.version>7.30.0</cucumber.version>
         <selenium.version>4.37.0</selenium.version>
-        <webdrivermanager.version>6.3.2</webdrivermanager.version>
+        <webdrivermanager.version>6.3.3</webdrivermanager.version>
         <cukedoctor.version>3.9.0</cukedoctor.version>
         <allure.version>2.30.0</allure.version>
         <aspectj.version>1.9.24</aspectj.version>
