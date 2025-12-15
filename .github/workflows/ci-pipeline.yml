@@ -21,6 +21,8 @@ jobs:
         image: selenium/hub:4.39.0
         ports:
           - 4444:4444
+          - 4442:4442
+          - 4443:4443
 
       chrome:
         image: selenium/node-chrome:4.39.0
@@ -57,12 +59,13 @@ jobs:
       - name: ⏳ Aguardar Selenium Grid
         run: |
           echo "Aguardando Selenium Grid ficar pronto..."
-          for i in {1..30}; do
-            if curl -s http://selenium-hub:4444/status | grep -q '"ready":true'; then
+          for i in {1..40}; do
+            STATUS=$(curl -s http://selenium-hub:4444/status || true)
+            echo "$STATUS"
+            if echo "$STATUS" | grep -q '"ready":true'; then
               echo "Selenium Grid pronto!"
               exit 0
             fi
-            echo "Ainda não pronto..."
             sleep 2
           done
           echo "Selenium Grid não ficou pronto a tempo"
