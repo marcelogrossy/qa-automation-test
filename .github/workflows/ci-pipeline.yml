@@ -19,7 +19,8 @@ jobs:
     services:
       selenium-hub:
         image: selenium/hub:4.39.0
-        options: --health-cmd "curl -f http://localhost:4444/status || exit 1" --health-interval 10s --health-timeout 5s --health-retries 5
+        ports:
+          - 4444:4444
 
       chrome:
         image: selenium/node-chrome:4.39.0
@@ -27,6 +28,11 @@ jobs:
           SE_EVENT_BUS_HOST: selenium-hub
           SE_EVENT_BUS_PUBLISH_PORT: 4442
           SE_EVENT_BUS_SUBSCRIBE_PORT: 4443
+          SE_NODE_MAX_SESSIONS: "1"
+          SE_NODE_OVERRIDE_MAX_SESSIONS: "true"
+
+    env:
+      SELENIUM_HUB_URL: "http://selenium-hub:4444"
 
     steps:
       # 1️⃣ Checkout do código
@@ -47,9 +53,20 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # 4️⃣ Configuração da URL do Selenium
-      - name: Configurar Variável Selenium URL
-        run: echo "SELENIUM_HUB_URL=http://selenium_chrome:4444/wd/hub" >> $GITHUB_ENV
+      # 4️⃣ Esperar Selenium Grid
+      - name: ⏳ Aguardar Selenium Grid
+        run: |
+          echo "Aguardando Selenium Grid ficar pronto..."
+          for i in {1..30}; do
+            if curl -s http://selenium-hub:4444/status | grep -q '"ready":true'; then
+              echo "Selenium Grid pronto!"
+              exit 0
+            fi
+            echo "Ainda não pronto..."
+            sleep 2
+          done
+          echo "Selenium Grid não ficou pronto a tempo"
+          exit 1
 
       # 5️⃣ Compilar, executar testes e gerar Allure Results
       - name: Compilar, Executar Testes e Gerar Allure Results
