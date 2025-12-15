@@ -60,22 +60,33 @@ public class DriverManager {
      */
     private static WebDriver createDriver() {
         String browser = System.getProperty("browser", "chrome").toLowerCase();
-        String runMode = System.getProperty("runMode", "remote").toLowerCase();
+        String runMode = System.getProperty("runMode"); // NÃO definir default aqui
         String gridUrl = System.getProperty("gridUrl", ConfigReader.get("gridUrl"));
 
         try {
-            switch (runMode) {
+            // null, vazio ou espaços → LOCAL
+            if (runMode == null || runMode.trim().isEmpty()) {
+                return createLocalDriver(browser);
+            }
+
+            switch (runMode.toLowerCase()) {
                 case "local":
                     return createLocalDriver(browser);
 
                 case "remote":
-                default:
                     return createRemoteDriver(browser, gridUrl);
+
+                default:
+                    throw new IllegalArgumentException(
+                            "runMode inválido: " + runMode + ". Use 'local' ou 'remote'."
+                    );
             }
+
         } catch (MalformedURLException e) {
             throw new RuntimeException("Erro ao criar o WebDriver: " + e.getMessage(), e);
         }
     }
+
 
     /**
      * Método para validar a seleção do browser que será usado nos cenários de testes
