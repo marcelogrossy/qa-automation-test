@@ -2,6 +2,7 @@ package com.outsera.web.driver;
 
 import com.outsera.web.commons.ConfigReader;
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -10,13 +11,11 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 public class DriverManager {
@@ -34,12 +33,23 @@ public class DriverManager {
     public static WebDriver getDriver() {
         if (Objects.isNull(driver)) {
             driver = createDriver();
-            driver.manage().window().maximize();
-            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(10));
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
+
+            driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(20));
+            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(2));
+
+            if (!(driver instanceof RemoteWebDriver)) {
+                driver.manage().window().maximize();
+            }
+
+            try {
+                ((JavascriptExecutor) driver).executeScript(
+                        "Object.defineProperty(navigator, 'webdriver', {get: () => undefined})"
+                );
+            } catch (Exception ignored) {}
         }
         return driver;
     }
+
 
     /**
      * Método para finalizar os testes web
@@ -127,13 +137,11 @@ public class DriverManager {
         switch (browser.toLowerCase()) {
             case "firefox":
                 FirefoxOptions firefoxOptions = new FirefoxOptions();
-                firefoxOptions.addArguments("--disable-gpu");
 
                 return new RemoteWebDriver(hubUrl, firefoxOptions);
 
             case "edge":
                 EdgeOptions edgeOptions = new EdgeOptions();
-                // O Edge usa o Chromium, então as opções são similares ao Chrome
                 edgeOptions.addArguments("--no-sandbox");
                 edgeOptions.addArguments("--disable-dev-shm-usage");
 
